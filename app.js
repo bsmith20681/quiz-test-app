@@ -3,6 +3,7 @@ var questionEl = document.getElementById("question");
 var answerButtonsEl = document.getElementById("answer-buttons");
 var startButton = document.getElementById("start-btn");
 var nextButton = document.getElementById("next-btn");
+var scoreLabel = document.getElementById("scorelabel");
 
 // Timer
 let time = 59;
@@ -12,14 +13,9 @@ function updateCountdown(e) {
   var minutes = Math.floor(time / 60);
   time = time < 1 ? "0" + time : time;
   countdoenEl.innerHTML = `${minutes}: ${time}`;
-  e === true ? (time = time - 5) : time--;
+  e === false ? (time = time - 5) : time--;
   //time--;
   time = time < 0 ? 0 : time;
-  console.log(time);
-}
-
-function minusSeconds() {
-  return time - 5;
 }
 
 // Making questions random
@@ -63,12 +59,19 @@ function resetState() {
     answerButtonsEl.removeChild(answerButtonsEl.firstChild);
   }
 }
+
 //Answers
+let score = 0;
 function selectAnswer(e) {
   var selectedButton = e.target;
   var correct = selectedButton.dataset.correct;
   if (correct === undefined) {
-    updateCountdown(true);
+    updateCountdown(false);
+  }
+
+  if (correct === "true") {
+    ++score;
+    scoreLabel.innerHTML = score;
   }
   setStatusClass(document.body, correct);
 
